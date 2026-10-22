@@ -38,7 +38,7 @@ a { color: var(--blue); }
 
 /* Header */
 .site-header {
-  background: linear-gradient(135deg, #1d428a 0%, #14306a 55%, #8a1530 100%);
+  background: #14306a;
   padding: 28px 0 22px;
   margin-bottom: 24px;
 }
