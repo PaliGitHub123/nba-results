@@ -167,7 +167,7 @@ async function videosViaRss() {
       lastError = err;
     }
   }
-  throw lastError || new Error('Kein Proxy erreichbar');
+  throw lastError || new Error('No proxy available');
 }
 
 async function loadVideos() {
@@ -244,8 +244,8 @@ function el(tag, className, text) {
 function statusText(game) {
   if (game.state === 'post') {
     const m = game.shortDetail.match(/(\d?)OT/i);
-    if (m) return 'Endstand' + (m[1] ? ` (${m[1]}. Verl.)` : ' (n. Verl.)');
-    return 'Endstand';
+    if (m) return 'Score' + (m[1] ? ` (${m[1]}. Verl.)` : ' (n. Verl.)');
+    return 'Score';
   }
   if (game.state === 'in') return 'LIVE · ' + game.shortDetail;
   return game.shortDetail;
@@ -281,7 +281,7 @@ function buildGameCard(game) {
   board.append(el('div', 'status' + (game.state === 'in' ? ' live' : ''), statusText(game)));
 
   const video = el('div', 'video');
-  const ph = el('div', 'video-placeholder', 'Video-Zusammenfassung wird gesucht …');
+  const ph = el('div', 'video-placeholder', 'Searching for game summary …');
   video.append(ph);
 
   card.append(board, video);
@@ -336,11 +336,11 @@ function setVideoSlot(slot, game, video, videosFailed) {
   }
   const box = el('div', 'video-missing');
   if (game.state !== 'post') {
-    box.append(el('span', '', 'Zusammenfassung folgt nach Spielende.'));
+    box.append(el('span', '', 'Summary after game has ended.'));
   } else {
     box.append(el('span', '', videosFailed
-      ? 'Videoliste gerade nicht erreichbar.'
-      : 'Noch keine Zusammenfassung gefunden.'));
+      ? 'Videolist not available right now.'
+      : 'No summary yet.'));
   }
   const a = el('a', '', 'Auf YouTube suchen');
   a.href = youtubeSearchUrl(game);
@@ -368,7 +368,7 @@ function renderLatestVideo(videos) {
   const candidates = (videos || []).filter((v) => !/#shorts?\b/i.test(v.title));
   const latest = candidates.slice().sort((a, b) => b.published - a.published)[0];
 
-  section.append(el('h2', '', 'Neuestes Video vom NBA-Kanal'));
+  section.append(el('h2', '', 'Latest Video from the NBA YT Channel'));
 
   if (latest) {
     card.append(buildVideoEmbed(latest));
@@ -400,13 +400,13 @@ async function main() {
   try {
     result = await findLastGameDay();
   } catch (err) {
-    subtitle.textContent = 'Ergebnisse konnten nicht geladen werden.';
-    showNotice('Die Ergebnis-Quelle (ESPN) ist gerade nicht erreichbar. Bitte später neu laden.', true);
+    subtitle.textContent = 'No results.';
+    showNotice('Results are not available right now (ESPN). Try again later.', true);
     return;
   }
 
   if (!result) {
-    subtitle.textContent = 'Letzte Nacht fand kein NBA-Spiel statt.';
+    subtitle.textContent = 'No games last night.';
     const { v } = await videosPromise;
     renderLatestVideo(v);
     return;
@@ -415,8 +415,8 @@ async function main() {
   const { date, games } = result;
   const live = games.some((g) => g.state === 'in');
   subtitle.textContent =
-    `${games.length} ${games.length === 1 ? 'Spiel' : 'Spiele'} · NBA-Spieltag ${formatDay(date)} (US-Ostküstenzeit)` +
-    (live ? ' · einige Spiele laufen noch' : '');
+    `${games.length} ${games.length === 1 ? 'Spiel' : 'Spiele'} · Game Day ${formatDay(date)} (US-Eastern Time)` +
+    (live ? ' · games still running' : '');
 
   const slots = games.map((game) => {
     const { card, video } = buildGameCard(game);
