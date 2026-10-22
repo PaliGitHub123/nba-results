@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NBA Last Night</title>
+  <meta name="description" content="Endstände der letzten NBA-Nacht mit Video-Zusammenfassungen vom NBA-YouTube-Kanal.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>🏀 NBA Last Night</h1>
+      <p id="subtitle" class="subtitle">Lade Ergebnisse …</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="notice" class="notice" hidden></div>
+    <section id="games" class="games" aria-live="polite"></section>
+    <section id="latest" class="latest" hidden></section>
+    <noscript><p class="notice">Diese Seite braucht JavaScript.</p></noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      Ergebnisse: ESPN (inoffizielle öffentliche API) · Videos: <a href="https://www.youtube.com/@NBA" target="_blank" rel="noopener">NBA auf YouTube</a> ·
+      Fan-Projekt, nicht mit der NBA verbunden.
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
